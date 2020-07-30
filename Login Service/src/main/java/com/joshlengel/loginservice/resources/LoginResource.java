@@ -38,4 +38,13 @@ public class LoginResource {
                 .get(username, encryptedPassword)
                 .orElseThrow(() -> new WebApplicationException("No such user exists", 400));
     }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Path("/remove")
+    public void delete(@FormParam("username") String username, @FormParam("password") String password) {
+        String encryptedPassword = encryptionResource.encrypt(password);
+
+        database.remove(username, encryptedPassword);
+    }
 }

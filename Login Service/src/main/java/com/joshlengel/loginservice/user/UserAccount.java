@@ -14,7 +14,7 @@ public class UserAccount {
 
     @Column(name = "encryptedPassword", nullable = false)
     private String encryptedPassword;
-    
+
     public Long getId() { return id; }
     public String getUsername() { return username; }
     public String getEncryptedPassword() { return encryptedPassword; }

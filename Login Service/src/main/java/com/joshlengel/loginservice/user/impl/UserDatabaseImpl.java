@@ -55,4 +55,19 @@ public class UserDatabaseImpl implements UserDatabase {
 
         return query.getResultList().size() > 0? Optional.of((UserAccount) query.getSingleResult()) : Optional.empty();
     }
+
+    @Override
+    @Transactional
+    public void remove(String username, String encryptedPassword) {
+        Query query = entityManager.createQuery(
+                "SELECT ua FROM UserAccount ua WHERE username = :username AND encryptedPassword = :encryptedPassword");
+        query.setParameter("username", username);
+        query.setParameter("encryptedPassword", encryptedPassword);
+
+        if (query.getResultList().size() == 0) {
+            throw new WebApplicationException("No such user exists", 400);
+        }
+
+        entityManager.remove(query.getSingleResult());
+    }
 }
