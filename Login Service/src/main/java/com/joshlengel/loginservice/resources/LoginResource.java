@@ -3,15 +3,16 @@ package com.joshlengel.loginservice.resources;
 import com.joshlengel.encryptionservice.resources.EncryptionResource;
 import com.joshlengel.loginservice.user.User;
 import com.joshlengel.loginservice.user.UserDatabase;
-import com.joshlengel.loginservice.user.impl.UserDatabseImpl;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Path("login")
 public class LoginResource {
 
-    UserDatabase database = new UserDatabseImpl();
+    @Inject
+    UserDatabase database;
 
     EncryptionResource encryptionResource = new EncryptionResource();
 
@@ -22,7 +23,9 @@ public class LoginResource {
     public User create(@FormParam("username") String username, @FormParam("password") String password) {
         String encryptedPassword = encryptionResource.encrypt(password);
 
-        return database.add(username, encryptedPassword);
+        return database
+                .add(username, encryptedPassword)
+                .orElseThrow(() -> new WebApplicationException("User already exists", 400));
     }
 
     @POST
@@ -31,6 +34,8 @@ public class LoginResource {
     public User login(@FormParam("username") String username, @FormParam("password") String password) {
         String encryptedPassword = encryptionResource.encrypt(password);
 
-        return database.get(username, encryptedPassword);
+        return database
+                .get(username, encryptedPassword)
+                .orElseThrow(() -> new WebApplicationException("No such user exists", 400));
     }
 }

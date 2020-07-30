@@ -1,6 +1,8 @@
 package com.joshlengel.loginservice.user;
 
+import java.util.Optional;
+
 public interface UserDatabase {
-    User add(String username, String encryptedPassword);
-    User get(String username, String encryptedPassword);
+    Optional<User> add(String username, String encryptedPassword);
+    Optional<User> get(String username, String encryptedPassword);
 }

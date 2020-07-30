@@ -30,11 +30,11 @@ public class LoginTest {
                 .body(is("{\"encryptedPasswrd\":\"" + encryptedPassword + "\",\"id\":\"" + 1 + "\",\"username\":\"" + username + "\"}"));
 
         given()
-                .when()
+            .when()
                 .pathParam("login", "")
                 .formParam("username", username)
                 .formParam("password", password)
-                .then()
+            .then()
                 .statusCode(200)
                 .body(is("{\"encryptedPasswrd\":\"" + encryptedPassword + "\",\"id\":\"" + 1 + "\",\"username\":\"" + username + "\"}"));
     }
