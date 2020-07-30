@@ -1,5 +1,6 @@
 package com.joshlengel.loginservice.resources;
 
+import com.joshlengel.encryptionservice.resources.EncryptionResource;
 import com.joshlengel.loginservice.user.User;
 import com.joshlengel.loginservice.user.UserDatabase;
 import com.joshlengel.loginservice.user.impl.UserDatabseImpl;
@@ -12,12 +13,14 @@ public class LoginResource {
 
     UserDatabase database = new UserDatabseImpl();
 
+    EncryptionResource encryptionResource = new EncryptionResource();
+
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("new")
     public User create(@FormParam("username") String username, @FormParam("password") String password) {
-        String encryptedPassword = password; // TODO: User Encryption Service
+        String encryptedPassword = encryptionResource.encrypt(password);
 
         return database.add(username, encryptedPassword);
     }
@@ -26,7 +29,7 @@ public class LoginResource {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     public User login(@FormParam("username") String username, @FormParam("password") String password) {
-        String encryptedPassword = password; // TODO: User Encryption Service
+        String encryptedPassword = encryptionResource.encrypt(password);
 
         return database.get(username, encryptedPassword);
     }
