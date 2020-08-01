@@ -1,4 +1,4 @@
-.message {
+.header {
     background: lightgray;
     border: none;
     margin: 0;
@@ -8,15 +8,8 @@
     text-align: center;
 }
 
-.message h3 {
+h1 {
+    color: white;
     margin: 0;
     padding: 20px;
-}
-
-.unsuccessful-signup {
-    color: #c92b25e8;
-}
-
-.successful-signup {
-    color: green;
 }

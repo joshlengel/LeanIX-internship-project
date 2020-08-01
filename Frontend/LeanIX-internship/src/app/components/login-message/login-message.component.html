@@ -1,5 +1,5 @@
-<div>
-    <h3>
+<div *ngIf="isNotPending()" class="message">
+    <h3 [ngClass]="onGetMessageClasses()">
         {{ loginMessage }}
     </h3>
 </div>

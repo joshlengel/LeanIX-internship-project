@@ -1,2 +1,5 @@
-<app-login-form (loginStateChanged)="state = $event"></app-login-form>
-<app-login-message [loginMessage]="getLoginMessage()"></app-login-message>
+<div>
+    <app-header></app-header>
+    <app-login-form (loginStateChanged)="state = $event"></app-login-form>
+    <app-login-message [loginMessage]="getLoginMessage()" [loginState]="this.state"></app-login-message>
+</div>
