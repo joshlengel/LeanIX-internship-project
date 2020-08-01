@@ -1,0 +1,49 @@
+# IntelliJ
+**/.idea
+*.ipr
+*.iml
+*.iws
+
+# Visual Studio Code
+**/.vscode
+**/.editorconfig
+!**/.vscode/settings.json
+!**/.vscode/tasks.json
+!**/.vscode/launch.json
+!**/.vscode/extensions.json
+**/.history/*
+
+# Maven
+**/target
+**/pom.xml.tag
+**/pom.xml.releaseBackup
+**/pom.xml.versionsBackup
+**/release.properties
+**/.mvn
+**/mvnw
+**/mvnw.cmd
+
+# compiled output
+**/dist
+**/tmp
+**/out-tsc
+# Only exists if Bazel was run
+**/bazel-out
+
+# dependencies
+**/node_modules
+
+# profiling files
+chrome-profiler-events*.json
+speed-measure-plugin*.json
+
+# misc
+**/.sass-cache
+**/connect.lock
+**/coverage
+**/typings
+*.log
+
+# System Files
+**/.DS_Store
+**/Thumbs.db
