@@ -7,6 +7,10 @@ import com.joshlengel.loginservice.user.UserDatabase;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Optional;
 
 @Path("login")
 public class LoginResource {
@@ -14,32 +18,58 @@ public class LoginResource {
     @Inject
     UserDatabase database;
 
-    EncryptionResource encryptionResource = new EncryptionResource();
+    EncryptionResource encryptionResource;
 
-    @POST
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("new")
-    public UserAccount create(@FormParam("username") String username, @FormParam("password") String password) {
-        String encryptedPassword = encryptionResource.encrypt(password);
+    public static class AccountData {
+        String username;
+        String password;
 
-        return database
-                .add(username, encryptedPassword)
-                .orElseThrow(() -> new WebApplicationException("User already exists", 400));
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+    }
+
+    @Inject
+    public LoginResource() {
+        encryptionResource = new EncryptionResource();
     }
 
     @POST
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public UserAccount login(@FormParam("username") String username, @FormParam("password") String password) {
-        String encryptedPassword = encryptionResource.encrypt(password);
+    @Path("/new")
+    public Response create(AccountData data) {
+        String encryptedPassword = encryptionResource.encrypt(data.password);
 
-        return database
-                .get(username, encryptedPassword)
-                .orElseThrow(() -> new WebApplicationException("No such user exists", 400));
+        Optional<UserAccount> account = database.add(data.username, encryptedPassword);
+
+        return account.isPresent()? Response.ok(account.get()).build() : Response.status(400).build();
     }
 
     @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(AccountData data) {
+        String encryptedPassword = encryptionResource.encrypt(data.password);
+
+        Optional<UserAccount> account = database.get(data.username, encryptedPassword);
+
+        return account.isPresent()? Response.ok(account.get()).build() : Response.status(400).build();
+    }
+
+    @DELETE
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Path("/remove")
     public void delete(@FormParam("username") String username, @FormParam("password") String password) {
