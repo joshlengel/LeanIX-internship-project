@@ -1,40 +1,73 @@
 package com.joshlengel.loginservice.user.impl;
 
-import com.joshlengel.loginservice.user.User;
+import com.joshlengel.loginservice.user.UserAccount;
 import com.joshlengel.loginservice.user.UserDatabase;
+import org.hibernate.exception.ConstraintViolationException;
 
 import javax.enterprise.context.ApplicationScoped;
-import java.util.ArrayList;
-import java.util.List;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
+import javax.persistence.Query;
+import javax.transaction.Transactional;
+import javax.ws.rs.WebApplicationException;
 import java.util.Optional;
 
 @ApplicationScoped
 public class UserDatabaseImpl implements UserDatabase {
 
-    private final List<User> database = new ArrayList<>();
+    @Inject
+    EntityManager entityManager;
 
     @Override
-    public Optional<User> add(String username, String encryptedPassword) {
-        if (database.stream().anyMatch(user ->
-                user.getUsername().equals(username)
-                && user.getEncryptedPassword().equals(encryptedPassword))) {
-            return Optional.empty();
+    @Transactional
+    public Optional<UserAccount> add(String username, String encryptedPassword) {
+        UserAccount user = new UserAccount();
+        user.setUsername(username);
+        user.setEncryptedPassword(encryptedPassword);
+
+        try {
+            entityManager.persist(user);
+            entityManager.flush();
+        } catch (PersistenceException e) {
+            if (e.getCause() instanceof ConstraintViolationException) {
+                return Optional.empty();
+            } else {
+                throw e; // Not the exception we care about
+            }
         }
 
-        User user = new User(username, encryptedPassword);
-        database.add(user);
         return Optional.of(user);
     }
 
     @Override
-    public Optional<User> get(String username, String encryptedPassword) {
-        for (User user : database) {
-            if (user.getUsername().equals(username)
-                && user.getEncryptedPassword().equals(encryptedPassword)) {
-                return Optional.of(user);
-            }
+    @Transactional
+    public Optional<UserAccount> get(String username, String encryptedPassword) {
+        UserAccount user = new UserAccount();
+        user.setUsername(username);
+        user.setEncryptedPassword(encryptedPassword);
+
+        Query query = entityManager.createQuery(
+                "SELECT ua FROM UserAccount ua WHERE username = :username AND encryptedPassword = :encryptedPassword");
+
+        query.setParameter("username", username);
+        query.setParameter("encryptedPassword", encryptedPassword);
+
+        return query.getResultList().size() > 0? Optional.of((UserAccount) query.getSingleResult()) : Optional.empty();
+    }
+
+    @Override
+    @Transactional
+    public void remove(String username, String encryptedPassword) {
+        Query query = entityManager.createQuery(
+                "SELECT ua FROM UserAccount ua WHERE username = :username AND encryptedPassword = :encryptedPassword");
+        query.setParameter("username", username);
+        query.setParameter("encryptedPassword", encryptedPassword);
+
+        if (query.getResultList().size() == 0) {
+            throw new WebApplicationException("No such user exists", 400);
         }
 
-        return Optional.empty();
+        entityManager.remove(query.getSingleResult());
     }
 }

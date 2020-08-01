@@ -1,0 +1,21 @@
+.form {
+    background: #656565;
+    border: #343434;
+    border-radius: 30px;
+    vertical-align: auto;
+    display: flex;
+}
+
+.login-form-div {
+    color: black;
+    padding: 20px;
+}
+
+.username-input-div {
+    border-width: 5px;
+    border-bottom: 5px #550000;
+}
+
+.submit-input-div {
+    color: #ff0000;
+}
