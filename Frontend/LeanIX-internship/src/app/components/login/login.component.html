@@ -1,5 +1,11 @@
-<div>
-    <app-header></app-header>
-    <app-login-form (loginStateChanged)="state = $event"></app-login-form>
-    <app-login-message [loginMessage]="getLoginMessage()" [loginState]="this.state"></app-login-message>
+<div class="root">
+    <div class="heading">
+        <h1>Login</h1>
+    </div>
+    <app-login-form (loginStateChanged)="onLoginStateChanged($event)"></app-login-form>
+    <div *ngIf="isNotPending()" class="message">
+        <p [ngClass]="this.classes">
+            {{ this.message }}
+        </p>
+    </div>
 </div>

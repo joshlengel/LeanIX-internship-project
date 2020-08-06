@@ -1,4 +1,55 @@
-div {
-    margin: auto;
+.root {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
     width: max-content;
+}
+
+.heading {
+    display: block;
+    background-color: #ccc;
+
+    margin: 0;
+    padding: 20px;
+}
+
+.heading h1 {
+    color: #666;
+    font-family: Georgia;
+    font-size: 40px;
+
+    text-align: center;
+}
+
+.message {
+    display: block;
+    background-color: #ccc;
+
+    margin: 0;
+    padding: 0;
+}
+
+.message p {
+    font-family: Georgia;
+    font-size: 20px;
+
+    text-align: center;
+    margin: 0;
+}
+
+.login-pending {
+    padding: 0;
+}
+
+.login-successful {
+    padding: 20px;
+    color: #666;
+}
+
+.login-unsuccessful {
+    padding: 20px;
+    color: #f57;
 }

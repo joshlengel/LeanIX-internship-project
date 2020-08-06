@@ -1,0 +1,46 @@
+div {
+    opacity: 1;
+}
+
+header {
+    display: block;
+
+    width: 100%;
+
+    margin: 0;
+    padding: 10px;
+
+    position: fixed;
+    z-index: 2;
+
+    left: 0;
+    top: 0;
+
+    background-color: #ccc;
+}
+
+header h1 {
+    color: #666;
+}
+
+.hidden-content {
+    display: block;
+    position: relative;
+    
+    top: 100px;
+
+    margin: 0;
+    padding: 10px;
+
+    background-color: #bbb;
+    width: fit-content; 
+}
+
+.hidden-content h3 {
+    margin: 0;
+}
+
+.hidden-content button {
+    margin: 10px 0 0 0;
+    padding: 10px;
+}

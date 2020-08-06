@@ -6,17 +6,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
-import { LoginMessageComponent } from './components/login-message/login-message.component';
-import { LoginFormComponent } from './components/login-form/login-form.component';
-import { HeaderComponent } from './components/layout/header/header.component';
+import { LoginFormComponent } from './components/login/login-form/login-form.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    LoginMessageComponent,
     LoginFormComponent,
-    HeaderComponent
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

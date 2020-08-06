@@ -1,0 +1,10 @@
+<div>
+    <header>
+        <h1>Dashboard</h1>
+    </header>
+    <div class="hidden-content">
+        <h3>Hidden content:</h3>
+        <p *ngIf="this.displayHidden">{{ this.hiddenContent }}</p>
+        <button (click)="onToggleDisplayHidden()">{{ this.displayHidden? 'Hide' : 'Show' }}</button>
+    </div>
+</div>

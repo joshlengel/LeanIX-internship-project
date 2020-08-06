@@ -1,3 +1,6 @@
 export enum LoginState {
-    SUCCESSFUL, UNSUCCESSFUL, PENDING
+    OK,
+    WRONG_USERNAME_OR_PASSWORD,
+    INTERNAL_ERROR,
+    PENDING
 }
