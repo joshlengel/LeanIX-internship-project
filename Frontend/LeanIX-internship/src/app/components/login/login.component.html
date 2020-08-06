@@ -3,7 +3,7 @@
         <h1>Login</h1>
     </div>
     <app-login-form (loginStateChanged)="onLoginStateChanged($event)"></app-login-form>
-    <div *ngIf="isNotPending()" class="message">
+    <div *ngIf="!this.pending" class="message">
         <p [ngClass]="this.classes">
             {{ this.message }}
         </p>

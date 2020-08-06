@@ -25,9 +25,18 @@ public class AccountResource {
     @Inject
     AuthService authService;
 
+    @POST
+    @Path("authenticate")
+    public void checkSession(@Context HttpHeaders headers,
+                             @NotNull @NotEmpty @PathParam("username") String username) {
+        Jws<Claims> claims = authService.validateToken(headers.getHeaderString("Authorization"));
+
+        if (!claims.getBody().getSubject().equals(username))
+            throw new WebApplicationException("Invalid token", Response.Status.UNAUTHORIZED);
+    }
+
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    @Consumes(MediaType.APPLICATION_JSON)
     @Path("/data")
     public String getData(@Context HttpHeaders headers,
                           @NotNull @NotEmpty @PathParam("username") String username) {
@@ -36,7 +45,7 @@ public class AccountResource {
         if (!claims.getBody().getSubject().equals(username))
             throw new WebApplicationException("Invalid token", Response.Status.UNAUTHORIZED);
 
-        return "s3cret data";
+        return "s3cret data for user: " + username;
     }
 
     @DELETE

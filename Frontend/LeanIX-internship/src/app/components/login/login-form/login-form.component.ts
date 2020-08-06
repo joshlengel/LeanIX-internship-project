@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { LoginService, LoginResult } from '../../../services/login.service';
 import { LoginState } from '../../../models/LoginState';
+import { ApiService } from '../../../services/api.service'
 
 @Component({
   selector: 'app-login-form',
@@ -11,42 +11,27 @@ export class LoginFormComponent implements OnInit {
 
   username: string;
   password: string;
-  loginState: LoginState;
 
-  @Output() loginStateChanged: EventEmitter<LoginResult> = new EventEmitter();
+  @Output() loginStateChanged: EventEmitter<LoginState> = new EventEmitter();
 
-  constructor(private loginService: LoginService) { }
+  constructor(private api: ApiService) { }
 
   ngOnInit(): void {
-    this.loginState = LoginState.PENDING;
-    this.loginStateChanged.emit({
-      state: this.loginState
-    });
+    this.loginStateChanged.emit(LoginState.PENDING);
   }
 
   onSubmit(): void {
-    this.loginService.login(this.username, this.password).subscribe(
-      result => {
-        let loginResult: LoginResult = {
-          data: {
-            'username': this.username,
-            'password': this.password
-          },
-          state: LoginState.OK,
-          token: result
-        };
-
-        this.loginStateChanged.emit(loginResult);
-      },
+    this.api.login(this.username, this.password).subscribe(
+      result => this.loginStateChanged.emit(LoginState.OK),
       error => {
         let state: LoginState;
-
+        
         switch(error.status) {
           case 401: state = LoginState.WRONG_USERNAME_OR_PASSWORD; break;
           default:  state = LoginState.INTERNAL_ERROR; break;
         }
 
-        this.loginStateChanged.emit({ 'state': state });
+        this.loginStateChanged.emit(state);
       }
     );
   }
