@@ -42,7 +42,7 @@ export class ApiService {
       }),
       catchError((err: HttpErrorResponse) => {
         switch (err.status) {
-          case 401: this.message = 'Wrong username of password'; break;
+          case 401: this.message = 'Wrong username or password'; break;
           default:  this.message = 'Something went wrong!';      break;
         }
 
