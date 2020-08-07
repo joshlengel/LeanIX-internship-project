@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { map, catchError, flatMap } from 'rxjs/operators';
-import { of, Observable, scheduled, Scheduler, throwError } from 'rxjs';
-import { LoginState } from '../models/LoginState';
+import { Observable, throwError } from 'rxjs';
+import * as jwt from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,7 @@ export class ApiService {
 
   private cacheUsername: string;
   private cachePassword: string;
+  private cacheRoles: string[];
   private token: string;
 
   message: string = null;
@@ -32,6 +33,11 @@ export class ApiService {
         this.cachePassword = password;
         this.token = result;
         this.verified = true;
+
+        // Decode token
+        let user = jwt(result);
+        this.cacheRoles = user['roles'];
+
         this.router.navigateByUrl(`/account/${username}`);
       }),
       catchError((err: HttpErrorResponse) => {
@@ -81,4 +87,8 @@ export class ApiService {
           responseType: 'text'
         }));
   }
+
+  getUsername(): string { return this.cacheUsername; }
+  getPassword(): string { return this.cachePassword; }
+  getRoles(): string[] { return this.cacheRoles; }
 }

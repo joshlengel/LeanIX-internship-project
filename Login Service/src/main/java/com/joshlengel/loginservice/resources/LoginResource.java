@@ -16,10 +16,10 @@ import javax.ws.rs.core.Response;
 public class LoginResource {
 
     @Inject
-    AuthService authService;
+    UserAccountDAO userAccountDAO;
 
     @Inject
-    UserAccountDAO userAccountDAO;
+    AuthService authService;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

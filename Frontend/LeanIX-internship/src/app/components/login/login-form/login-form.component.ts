@@ -25,7 +25,7 @@ export class LoginFormComponent implements OnInit {
       result => this.loginStateChanged.emit(LoginState.OK),
       error => {
         let state: LoginState;
-        
+
         switch(error.status) {
           case 401: state = LoginState.WRONG_USERNAME_OR_PASSWORD; break;
           default:  state = LoginState.INTERNAL_ERROR; break;

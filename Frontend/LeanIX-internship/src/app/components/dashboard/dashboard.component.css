@@ -23,24 +23,56 @@ header h1 {
     color: #666;
 }
 
-.hidden-content {
-    display: block;
+.left-side {
+    width: max-content;
     position: relative;
     
     top: 100px;
 
-    margin: 0;
+    padding: 10px;
+
+    background-color: #ddd;
+}
+
+#first-side-div {
+    margin-top: 0;
+}
+
+.side-div {
+    display: block;
+    position: static;
+
+    width: default;
+
+    margin-top: 10px;
     padding: 10px;
 
     background-color: #bbb;
     width: fit-content; 
 }
 
-.hidden-content h3 {
+.side-div h3 {
     margin: 0;
 }
 
-.hidden-content button {
+.side-div button {
     margin: 10px 0 0 0;
     padding: 10px;
+}
+
+#account-info-table {
+    display: grid;
+    position: relative;
+
+    margin: 10px;
+
+    grid-template: 1fr 1fr / 1fr 1fr;
+}
+
+.left-table-label {
+    text-align: left;
+}
+
+.right-table-label {
+    text-align: right;
 }

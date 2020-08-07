@@ -50,4 +50,17 @@ public class UserAccountDAO {
                 .setParameter("password", credentials.getPassword())
                 .getResultStream().findFirst();
     }
+
+    @Transactional
+    public void updateRoles(String username, String roles) {
+        manager.createQuery("UPDATE UserAccount ua SET roles=:roles WHERE username=:username")
+                .setParameter("username", username)
+                .setParameter("roles", roles)
+                .executeUpdate();
+    }
+
+    @Transactional
+    public void dropTable() {
+        manager.createQuery("DELETE FROM UserAccount").executeUpdate();
+    }
 }

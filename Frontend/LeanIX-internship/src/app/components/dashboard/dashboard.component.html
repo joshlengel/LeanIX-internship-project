@@ -2,9 +2,20 @@
     <header>
         <h1>Dashboard</h1>
     </header>
-    <div class="hidden-content">
-        <h3>Hidden content:</h3>
-        <p *ngIf="this.displayHidden">{{ this.hiddenContent }}</p>
-        <button (click)="onToggleDisplayHidden()">{{ this.displayHidden? 'Hide' : 'Show' }}</button>
+    <div class="left-side">
+        <div class="side-div" id="first-side-div">
+            <h3>Account Info:</h3>
+            <div id="account-info-table">
+                <label class="left-table-label">Username:</label>
+                <label class="right-table-label">{{ this.username }}</label>
+                <label class="left-table-label">Roles:</label>
+                <label class="right-table-label">{{ this.roles }}</label>
+            </div>
+        </div>
+        <div class="side-div">
+            <h3>Hidden content:</h3>
+            <p *ngIf="this.displayHidden">{{ this.hiddenContent }}</p>
+            <button (click)="onToggleDisplayHidden()">{{ this.displayHidden? 'Hide' : 'Show' }}</button>
+        </div>
     </div>
 </div>

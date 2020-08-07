@@ -12,11 +12,17 @@ export class DashboardComponent implements OnInit {
   displayHidden: boolean;
   hiddenContent: string;
 
+  username: string;
+  roles: string[];
+
   constructor(private api: ApiService) { }
 
   ngOnInit(): void {
     this.displayHidden = false;
     this.hiddenContent = null;
+
+    this.username = this.api.getUsername();
+    this.roles = this.api.getRoles();
   }
 
   onToggleDisplayHidden(): void {
